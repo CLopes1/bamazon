@@ -2,6 +2,7 @@
 var figlet = require('figlet');
 var mysql = require('mysql');
 var inquirer = require('inquirer');
+var Table = require('cli-table');
 
 
 //Welcome message using figlet package
@@ -32,10 +33,18 @@ connection.connect(function (error) {
     queryAllProducts()
     function queryAllProducts() {
         connection.query("SELECT * FROM products", function (err, res) {
+
+            var table = new Table({
+                head: ['ID', 'Product Name', 'Department', 'Price', 'Stock Quantity']
+            })
+
             for (var i = 0; i < res.length; i++) {
-                console.log(res[i].id + " | " + res[i].product_name + " | " + res[i].price + " | ");
+                // console.log(res[i].id + " | " + res[i].product_name + " | " + res[i].price + " | ");
+                table.push([res[i].id, res[i].product_name, res[i].department_name, res[i].price.toFixed(2), res[i].stock_quantity]);
             }
-            console.log("-----------------------------------");
+
+            console.log(table.toString());
+            console.log("---------------------------------------------------------------------------------");
             // console.log(res)
             //     });
             // }
@@ -48,7 +57,7 @@ connection.connect(function (error) {
                 inquirer.prompt([
                     {
                         type: 'input',
-                        name: 'itemId',
+                        name: 'id',
                         message: 'Please enter the ID of the item you would like to purchase.',
                         // validate: validateInput,
                         // filter: Number
@@ -62,17 +71,19 @@ connection.connect(function (error) {
                         // filter: Number
                     }
                 ]).then(function (input) {
-                    console.log('Customer has selected: \n    item_id = ' + input.itemId + '\n    quantity = ' + input.quantity);
+                    console.log('Customer has selected: \n    item_id = ' + input.id + '\n    quantity = ' + input.quantity);
 
 
-                    //Store the user's input in variables.
-                    var id = input.itemId;
-                    var quantity = input.quantity
+                    //Store the user's input in variables and calculate the total cost.
+                    // var purchaseItem = input.id;
+                    // var howMuch = input.quantity
+                    // var totalCost =
+
 
 
                     //To do    
                     //Check the table to determine if enough inventory is available.
-                  
+
 
                     //Access the table
                     // queryAllProducts()
