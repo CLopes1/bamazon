@@ -82,27 +82,23 @@ connection.connect(function (error) {
                     var totalCost = res[item].price.toFixed(2) * quantity;
                     console.log(item, quantity, totalCost)
 
-                    if (quantity < res[item].stock_quantity) {
+                    if (quantity <= res[item].stock_quantity) {
                         console.log("Sweet! Your total cost is " + totalCost + ". Show me the money!")
+
+                        connection.query("UPDATE products SET ? WHERE ?", [{
+                            stock_quantity: res[item].stock_quantity - quantity
+                        }, {
+                            id: res[item].id
+                        }], function(err, res) {
+                            // console.log(err);
+                            queryAllProducts();
+                        });
                     }
 
                     else {
                         console.log("Doh! We don't have enough stock to fill your order. Please refer to the product chart and choose an an available quantity.")
+                        queryAllProducts()
                     }
-
-
-                    //To do    
-                    //Check the table to determine if enough inventory is available.
-
-
-                    //Access the table
-                    // queryAllProducts()
-                    // console.log(res)
-
-
-                    //If enough inventory is available, then invoke a function that decrements the item's stock_quantity in the database.
-                    //Else, let the user know that there's not enough inventory. 
-
 
                 })
 
@@ -111,8 +107,8 @@ connection.connect(function (error) {
         });
     }
 
-    //kills your connection to the db
-    connection.end();
+    // // kills your connection to the db
+    // connection.end();
 
 })
 
