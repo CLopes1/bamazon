@@ -34,10 +34,13 @@ connection.connect(function (error) {
     function queryAllProducts() {
         connection.query("SELECT * FROM products", function (err, res) {
 
+
+            //Defines the CLI table parameters
             var table = new Table({
                 head: ['ID', 'Product Name', 'Department', 'Price', 'Stock Quantity']
             })
 
+            //Print table contents in the terminal
             for (var i = 0; i < res.length; i++) {
                 // console.log(res[i].id + " | " + res[i].product_name + " | " + res[i].price + " | ");
                 table.push([res[i].id, res[i].product_name, res[i].department_name, res[i].price.toFixed(2), res[i].stock_quantity]);
@@ -58,27 +61,34 @@ connection.connect(function (error) {
                     {
                         type: 'input',
                         name: 'id',
-                        message: 'Please enter the ID of the item you would like to purchase.',
-                        // validate: validateInput,
-                        // filter: Number
+                        message: 'Please enter the ID of the item you would like to purchase from the table above.',
+
                     },
                     {
                         // Prompt the user how many they would like to purchase
                         type: 'input',
                         name: 'quantity',
-                        message: 'How many would you like to purchase?',
-                        // validate: validateInput,
-                        // filter: Number
+                        message: 'How many would you like to buy?',
+
                     }
-                ]).then(function (input) {
-                    console.log('Customer has selected: \n    item_id = ' + input.id + '\n    quantity = ' + input.quantity);
+                ]).then(function (answer) {
+                    // console.log('Customer has selected: \n    item_id = ' + answer.id + '\n    quantity = ' + answer.quantity);
+
 
 
                     //Store the user's input in variables and calculate the total cost.
-                    // var purchaseItem = input.id;
-                    // var howMuch = input.quantity
-                    // var totalCost =
+                    var item = answer.id - 1;
+                    var quantity = answer.quantity;
+                    var totalCost = res[item].price.toFixed(2) * quantity;
+                    console.log(item, quantity, totalCost)
 
+                    if (quantity < res[item].stock_quantity) {
+                        console.log("Sweet! Your total cost is " + totalCost + ". Show me the money!")
+                    }
+
+                    else {
+                        console.log("Doh! We don't have enough stock to fill your order. Please refer to the product chart and choose an an available quantity.")
+                    }
 
 
                     //To do    
