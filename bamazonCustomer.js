@@ -80,7 +80,7 @@ connection.connect(function (error) {
                     var item = answer.id - 1;
                     var quantity = answer.quantity;
                     var totalCost = res[item].price.toFixed(2) * quantity;
-                    console.log(item, quantity, totalCost)
+                    // console.log(item, quantity, totalCost)
 
                     if (quantity <= res[item].stock_quantity) {
                         console.log("Sweet! Your total cost is " + totalCost + ". Show me the money!")
