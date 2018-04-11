@@ -62,15 +62,14 @@ connection.connect(function (error) {
                         type: 'input',
                         name: 'id',
                         message: 'Please enter the ID of the item you would like to purchase from the table above.',
-
                     },
                     {
                         // Prompt the user how many they would like to purchase
                         type: 'input',
                         name: 'quantity',
                         message: 'How many would you like to buy?',
-
                     }
+
                 ]).then(function (answer) {
                     // console.log('Customer has selected: \n    item_id = ' + answer.id + '\n    quantity = ' + answer.quantity);
 
@@ -82,6 +81,8 @@ connection.connect(function (error) {
                     var totalCost = res[item].price.toFixed(2) * quantity;
                     // console.log(item, quantity, totalCost)
 
+
+                    //Check to see if the item is in inventory. 
                     if (quantity <= res[item].stock_quantity) {
                         console.log("Sweet! Your total cost is " + totalCost + ". Show me the money!")
 
@@ -89,15 +90,15 @@ connection.connect(function (error) {
                             stock_quantity: res[item].stock_quantity - quantity
                         }, {
                             id: res[item].id
-                        }], function(err, res) {
+                        }], function (err, res) {
                             // console.log(err);
-                            queryAllProducts();
+                            // queryAllProducts();
                         });
                     }
 
                     else {
                         console.log("Doh! We don't have enough stock to fill your order. Please refer to the product chart and choose an available quantity.")
-                        queryAllProducts()
+                        // queryAllProducts()
                     }
 
                 })
@@ -108,6 +109,7 @@ connection.connect(function (error) {
     }
 
     // // kills your connection to the db
-    // connection.end();
+    connection.end();
 
 })
+
