@@ -1,4 +1,4 @@
-# bamazon
+# Bamazon
 
 Bamazon is a command line-based shopping application that prompts visitors with a visual storefront and asks them what they&#39;d like to purchase. Store inventory is tracked in a MySQL database and gets decremented with each purchase. If there&#39;s no inventory for a given product, then the program will prompt the user accordingly.
 
